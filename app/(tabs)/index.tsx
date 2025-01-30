@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   ScrollView,
+  Pressable,
 } from "react-native";
 //@ts-ignore
 import bgimage from "@/assets/images/hero-bg.png";
@@ -13,6 +14,7 @@ import TrendingCard from "@/components/Trendingcard";
 import getTrendingMovies, { getTrendingTvShows } from "@/scrape";
 //@ts-ignore
 import axios from "axios";
+import { useRouter } from "expo-router";
 // Import the images using require() instead of direct imports
 const numbered_images = [
   require("@/assets/images/h1.png"),
@@ -29,6 +31,7 @@ interface TrendingMovies {
 const App = () => {
   const [trendingmovies, setTrendingMovies] = useState<TrendingMovies[]>([]);
   const [trendingtvshows, setTrendingTvshows] = useState<TrendingMovies[]>([]);
+  const router = useRouter();
   const getmovieData = async () => {
     try {
       const res = await getTrendingMovies();
@@ -118,6 +121,7 @@ const App = () => {
                   return (
                     <TrendingCard
                       key={movie_.id}
+                      id={movie_.id}
                       imageurl={numbered_images[ind]}
                       poster_path={movie_.poster_path}
                     />
@@ -167,6 +171,7 @@ const App = () => {
                   return (
                     <TrendingCard
                       key={tv_.id}
+                      id={tv_.id}
                       imageurl={numbered_images[ind]}
                       poster_path={tv_.poster_path}
                     />
