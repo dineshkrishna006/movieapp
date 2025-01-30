@@ -45,7 +45,7 @@ export async function getTrendingTvShows() {
     arr.map((movies_) => {
       tvshows.push({
         id: movies_.id,
-        title: movies_.title,
+        title: movies_.name,
         poster_path: movies_.poster_path,
       });
     });

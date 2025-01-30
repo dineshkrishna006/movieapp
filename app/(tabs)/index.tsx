@@ -10,7 +10,7 @@ import {
 //@ts-ignore
 import bgimage from "@/assets/images/hero-bg.png";
 import TrendingCard from "@/components/Trendingcard";
-import getTrendingMovies,{getTrendingTvShows} from "@/scrape";
+import getTrendingMovies, { getTrendingTvShows } from "@/scrape";
 //@ts-ignore
 import axios from "axios";
 // Import the images using require() instead of direct imports
@@ -28,21 +28,32 @@ interface TrendingMovies {
 }
 const App = () => {
   const [trendingmovies, setTrendingMovies] = useState<TrendingMovies[]>([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await getTrendingMovies();
-        console.log("API Response:", res); // Debug log
-        if (res?.status === 200) {
-          setTrendingMovies(res.arr_);
-        }
-      } catch (error) {
-        console.error("Error fetching trending movies:", error);
+  const [trendingtvshows, setTrendingTvshows] = useState<TrendingMovies[]>([]);
+  const getmovieData = async () => {
+    try {
+      const res = await getTrendingMovies();
+      console.log("API Response:", res); // Debug log
+      if (res?.status === 200) {
+        setTrendingMovies(res.arr_);
       }
-    };
-
-    getData();
+    } catch (error) {
+      console.error("Error fetching trending movies:", error);
+    }
+  };
+  const gettvshowsData = async () => {
+    try {
+      const res = await getTrendingTvShows();
+      console.log("API Response:", res); // Debug log
+      if (res?.status === 200) {
+        setTrendingTvshows(res.tvshows);
+      }
+    } catch (error) {
+      console.error("Error fetching trending tv shows:", error);
+    }
+  };
+  useEffect(() => {
+    getmovieData();
+    gettvshowsData();
   }, []); // Empty dependency array for single fetch on mount
 
   return (
@@ -136,7 +147,7 @@ const App = () => {
                 fontSize: 30,
               }}
             >
-              Trending TV
+              Trending TV Shows
             </Text>
             <View
               style={{
@@ -152,19 +163,15 @@ const App = () => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.scrollViewContent}
               >
-                {trendingmovies?.map((movie_, ind) => {
+                {trendingtvshows?.map((tv_, ind) => {
                   return (
                     <TrendingCard
-                      key={movie_.id}
+                      key={tv_.id}
                       imageurl={numbered_images[ind]}
-                      poster_path={movie_.poster_path}
+                      poster_path={tv_.poster_path}
                     />
                   );
                 })}
-                {/* <TrendingCard
-                  imageurl={require("@/assets/images/h1.png")}
-                  poster_path={"4bKlTeOUr5AKrLky8mwWvlQqyVd.jpg"}
-                /> */}
               </ScrollView>
             </View>
           </View>
